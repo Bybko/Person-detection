@@ -18,14 +18,16 @@ def object_detection_on_a_image():
         if not success:
             break
 
-        result = segment_camera.segmentFrame(frame, show_bboxes=True, segment_target_classes=target_class)
-        # Подсчитайте количество экземпляров объекта "человек" на кадре
+        roi = frame[100:400, 200:500]
+        result = segment_camera.segmentFrame(roi, show_bboxes=True, segment_target_classes=target_class)
+
         num_persons = len(result[0]["scores"])
 
         total_frames += 1
         if num_persons > 0:
             person_frames += 1
 
+        cv2.rectangle(frame, (200, 100), (500, 400), (0, 255, 0), 2)
         cv2.imshow('Video', frame)
 
         if cv2.waitKey(1) == ord('q'):
@@ -34,7 +36,6 @@ def object_detection_on_a_image():
     camera.release()
     cv2.destroyAllWindows()
 
-    # Вычисление процента времени, когда был обнаружен человек
     percentage_time = (person_frames / total_frames) * 100
     print(f"Процент времени, когда зона была заполнена: {percentage_time}%")
 
