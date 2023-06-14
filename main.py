@@ -1,6 +1,8 @@
 import cv2
 from pixellib.instance import instance_segmentation
 
+from core import Model, Camera
+
 
 def object_detection_on_a_image():
     segment_camera = instance_segmentation(infer_speed="rapid")
@@ -41,7 +43,10 @@ def object_detection_on_a_image():
 
 
 def main():
-    object_detection_on_a_image()
+    # object_detection_on_a_image()
+    model = Model('mask_rcnn_coco.h5', person=True)
+    camera = Camera(model)
+    camera.start()
 
 
 if __name__ == '__main__':

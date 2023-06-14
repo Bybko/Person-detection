@@ -1,3 +1,4 @@
 pixellib==0.6.1
 tensorflow==2.4.1
 opencv-python==4.7.0.72
+numpy~=1.19.5
