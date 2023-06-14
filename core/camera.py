@@ -1,4 +1,4 @@
-from cv2 import VideoCapture, imshow, waitKey, destroyAllWindows
+from cv2 import VideoCapture, imshow, waitKey, destroyAllWindows, rectangle
 from typing import Any
 
 from singleton import SingletonMeta
@@ -23,6 +23,7 @@ class Camera(metaclass=SingletonMeta):
     def _cycle(self) -> None:
         while True:
             frame = self._proceed_frame()
+            rectangle(frame, (200, 100), (500, 400), (0, 255, 0), 2)
             self._show_frame(frame)
             if self._check_exit():
                 break
@@ -35,7 +36,7 @@ class Camera(metaclass=SingletonMeta):
 
         self._model.proceed_frame(frame)
         self._total_frames += 1
-        if self._model.check_persons_in_zone(frame)[0]:
+        if self._model.check_persons_in_zone((200, 100, 500, 400))[0]:
             self._person_frames += 1
 
         return frame
