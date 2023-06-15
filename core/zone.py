@@ -11,6 +11,9 @@ class Box:
         self.endX = x2
         self.endY = y2
 
+    def draw_rectangle(self, frame: Any) -> None:
+        rectangle(frame, (self.startX, self.startY), (self.endX, self.endY), (0, 255, 0), 2)
+
 
 class Zone(Box):
     def __init__(self, name: str, x1: int, y1: int, x2: int, y2: int) -> None:
@@ -20,9 +23,6 @@ class Zone(Box):
         self.one_person_time = 0
         self.two_person_time = 0
         self.more_person_time = 0
-
-    def draw_rectangle(self, frame: Any) -> None:
-        rectangle(frame, (self.startX, self.startY), (self.endX, self.endY), (0, 255, 0), 2)
 
     def add_person_frames(self, count: int, delta_time: float) -> None:
         if count <= 0:
