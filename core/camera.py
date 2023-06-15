@@ -5,25 +5,51 @@ from singleton import SingletonMeta
 from .model import Model
 
 
+class Zone:
+    def __init__(self, x1: int, y1: int, x2:int, y2:int, model: Any) -> None:
+        self.startX = x1
+        self.startY = y1
+        self.endX = x2
+        self.endY = y2
+        self._model = model
+        self.person_frames = 0
+
+    def draw_rectangle(self, frame: Any) -> None:
+        rectangle(frame, (self.startX, self.startY), (self.endX, self.endY), (0, 255, 0), 2)
+
+    def check_zone(self) -> None:
+        if self._model.check_persons_in_zone((self.startX, self.startY, self.endX, self.endY))[0]:
+            self.person_frames += 1
+
+    def filling_time(self, total_frames: int) -> None:
+        print(f"Процент времени, когда зона была заполнена: {self.person_frames / total_frames * 100}%")
+
+
 class Camera(metaclass=SingletonMeta):
     def __init__(self, model: Model) -> None:
         self._model = model
         self._camera = VideoCapture(0)
         self._total_frames = 0
         self._person_frames = 0
+        #cringe out here
+        self.zones = [Zone(100, 100, 300, 300, self._model), Zone(350, 100, 550, 300, self._model)]
+        #cringe over
 
     def start(self) -> None:
         self._total_frames = 0
         self._person_frames = 0
+
         self._cycle()
         self._camera.release()
         destroyAllWindows()
-        print(f"Процент времени, когда зона была заполнена: {self._person_frames / self._total_frames * 100}%")
+
+        for zone in self.zones:
+            zone.filling_time(self._total_frames)
 
     def _cycle(self) -> None:
         while True:
             frame = self._proceed_frame()
-            rectangle(frame, (200, 100), (500, 400), (0, 255, 0), 2)
+
             self._show_frame(frame)
             if self._check_exit():
                 break
@@ -34,10 +60,14 @@ class Camera(metaclass=SingletonMeta):
         if not success:
             raise ConnectionError('Cannot connect to camera.')
 
+        for zone in self.zones:
+            zone.draw_rectangle(frame)
+
         self._model.proceed_frame(frame)
         self._total_frames += 1
-        if self._model.check_persons_in_zone((200, 100, 500, 400))[0]:
-            self._person_frames += 1
+
+        for zone in self.zones:
+            zone.check_zone()
 
         return frame
 
