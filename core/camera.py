@@ -3,26 +3,7 @@ from typing import Any
 
 from singleton import SingletonMeta
 from .model import Model
-
-
-class Zone:
-    def __init__(self, x1: int, y1: int, x2:int, y2:int, model: Any) -> None:
-        self.startX = x1
-        self.startY = y1
-        self.endX = x2
-        self.endY = y2
-        self._model = model
-        self.person_frames = 0
-
-    def draw_rectangle(self, frame: Any) -> None:
-        rectangle(frame, (self.startX, self.startY), (self.endX, self.endY), (0, 255, 0), 2)
-
-    def check_zone(self) -> None:
-        if self._model.check_persons_in_zone((self.startX, self.startY, self.endX, self.endY))[0]:
-            self.person_frames += 1
-
-    def filling_time(self, total_frames: int) -> None:
-        print(f"Процент времени, когда зона была заполнена: {self.person_frames / total_frames * 100}%")
+from .zone import Zone
 
 
 class Camera(metaclass=SingletonMeta):
@@ -31,9 +12,9 @@ class Camera(metaclass=SingletonMeta):
         self._camera = VideoCapture(0)
         self._total_frames = 0
         self._person_frames = 0
-        #cringe out here
-        self.zones = [Zone(100, 100, 300, 300, self._model), Zone(350, 100, 550, 300, self._model)]
-        #cringe over
+        # cringe out here
+        self.zones = [Zone("FirstZone", 100, 100, 300, 300), Zone("SecondZone", 350, 100, 550, 300)]
+        # cringe over
 
     def start(self) -> None:
         self._total_frames = 0
@@ -67,7 +48,7 @@ class Camera(metaclass=SingletonMeta):
         self._total_frames += 1
 
         for zone in self.zones:
-            zone.check_zone()
+            self._model.check_persons_in_zone(zone)
 
         return frame
 
