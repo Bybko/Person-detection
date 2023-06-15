@@ -18,13 +18,13 @@ class Model(metaclass=SingletonMeta):
         self._last_result = self._segment_camera.segmentFrame(frame, show_bboxes=True,
                                                               segment_target_classes=self._target_class)
 
-    def check_persons_in_zone(self, zone: Zone) -> None:
+    def check_persons_in_zone(self, zone: Zone) -> int:
         boxes = self._get_persons_boxes()
         count = 0
         for box in boxes:
             if self._check_x_overlap(zone, box) and self._check_y_overlap(zone, box):
                 count += 1
-        zone.add_person_frames(count)
+        return count
 
     def _get_persons_boxes(self) -> List[Box]:
         boxes = []

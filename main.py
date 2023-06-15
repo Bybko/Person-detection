@@ -21,10 +21,9 @@ def object_detection_on_a_image():
 
 
 def main():
-    object_detection_on_a_image()
-    # model = Model('mask_rcnn_coco.h5', person=True)
-    # camera = Camera(model)
-    # camera.start()
+    model = Model('mask_rcnn_coco.h5', infer_speed='average', person=True)
+    camera = Camera(model)
+    camera.start()
 
 
 if __name__ == '__main__':
