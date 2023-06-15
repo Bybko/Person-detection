@@ -1,10 +1,10 @@
-from core import Model, Camera
+from application.terminal import TerminalApplication
 
 
 def main():
-    model = Model('mask_rcnn_coco.h5', infer_speed='rapid', person=True)
-    camera = Camera(model)
-    camera.start()
+    application = TerminalApplication()
+    application.start()
+    application.stop()
 
 
 if __name__ == '__main__':

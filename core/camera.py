@@ -1,4 +1,4 @@
-from cv2 import VideoCapture, imshow, waitKey, destroyAllWindows, rectangle
+from cv2 import VideoCapture, imshow, destroyAllWindows
 from typing import Any
 import time
 import datetime
@@ -23,21 +23,12 @@ class Camera(metaclass=SingletonMeta):
     def start(self) -> None:
         self._total_time = 0
         self._prev_frame_time = time.time()
-        self._cycle()
+
+    def stop(self) -> None:
         self._camera.release()
         destroyAllWindows()
 
-    def _cycle(self) -> None:
-        while True:
-            self._prev_frame_time = time.time()
-            frame = self._proceed_frame()
-
-            self._show_frame(frame)
-            if self._check_exit():
-                break
-            self._print_zones_info()
-
-    def _proceed_frame(self) -> Any:
+    def proceed_frame(self) -> Any:
         success, frame = self._camera.read()
 
         if not success:
@@ -51,22 +42,22 @@ class Camera(metaclass=SingletonMeta):
         self._total_time += self._current_frame_time - self._prev_frame_time
 
         for zone in self._zones:
-            zone.add_person_frames(self._model.check_persons_in_zone(zone), self._current_frame_time - self._prev_frame_time)
+            zone.add_person_frames(self._model.check_persons_in_zone(zone),
+                                   self._current_frame_time - self._prev_frame_time)
 
+        self._prev_frame_time = time.time()
         return frame
 
-    def _print_zones_info(self) -> None:
-        print(f'camera: 1\t time:{str(datetime.timedelta(seconds=int(self._total_time)))}')
-        print(f'{"id": ^15}|{"time with person": ^20}|{"one person": ^20}|{"two person": ^20}|{"more person": ^20}')
+    def get_info(self) -> str:
+        info = f'camera: 1\t time:{str(datetime.timedelta(seconds=int(self._total_time)))}\n'
+        info += f'{"id": ^15}|{"time with person": ^20}|{"one person": ^20}|{"two person": ^20}|{"more person": ^20}\n'
         for zone in self._zones:
             zone_time = zone.get_time_info(self._total_time)
-            print(f'{zone.name: ^15}|{zone_time["person_time"][0]:>9} {zone_time["person_time"][1]:>8}% |'
-                  f'{zone_time["one_person_time"][0]:>9} {zone_time["one_person_time"][1]:>8}% |'
-                  f'{zone_time["two_person_time"][0]:>9} {zone_time["two_person_time"][1]:>8}% |'
-                  f'{zone_time["more_person_time"][0]:>9} {zone_time["more_person_time"][1]:>8}% ')
+            info += f'{zone.name: ^15}|{zone_time["person_time"][0]:>9} {zone_time["person_time"][1]:>8}% |'\
+                    f'{zone_time["one_person_time"][0]:>9} {zone_time["one_person_time"][1]:>8}% |'\
+                    f'{zone_time["two_person_time"][0]:>9} {zone_time["two_person_time"][1]:>8}% |'\
+                    f'{zone_time["more_person_time"][0]:>9} {zone_time["more_person_time"][1]:>8}%\n'
+        return info
 
-    def _show_frame(self, frame: Any) -> None:
+    def show_frame(self, frame: Any) -> None:
         imshow('Video', frame)
-
-    def _check_exit(self) -> bool:
-        return waitKey(1) == ord('q')
