@@ -1,7 +1,7 @@
 from cv2 import rectangle
 from typing import Any
 from datetime import timedelta
-from typing import Tuple, Dict
+from typing import Dict
 
 
 class Box:
@@ -40,16 +40,12 @@ class Zone(Box):
         return {
             'person_time':
                 (str(timedelta(seconds=int(self.person_time)))),
-            'person_time_percen':
+            'person_time_percent':
                 (str(f'{self.person_time / total_time * 100: .1f}')),
-            '':
-
-
-
-
-                (str(timedelta(seconds=int(self.one_person_time))), f'{self.one_person_time / total_time * 100: .1f}'),
-            'two_person_time':
-                (str(timedelta(seconds=int(self.two_person_time))), f'{self.two_person_time / total_time * 100: .1f}'),
-            'more_person_time':
-                (str(timedelta(seconds=int(self.more_person_time))), f'{self.more_person_time / total_time * 100: .1f}')
+            'num_of_intervals':
+                (str(timedelta(seconds=int(self.one_person_time)))),
+            'avg_of_intervals':
+                (str(timedelta(seconds=int(self.two_person_time)))),
+            'persons_avg':
+                (str(timedelta(seconds=int(self.more_person_time))))
         }
