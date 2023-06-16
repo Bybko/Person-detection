@@ -20,32 +20,33 @@ class Zone(Box):
         super().__init__(x1, y1, x2, y2)
         self.name = name
         self.person_time = 0
-        self.one_person_time = 0
-        self.two_person_time = 0
-        self.more_person_time = 0
+        self.intervals = 0
+        self.__occupied = False
+        self.persons_times = {}
 
     def add_person_frames(self, count: int, delta_time: float) -> None:
         if count <= 0:
+            if self.__occupied:
+                self.__occupied = False
             return
 
+        if not self.__occupied:
+            self.__occupied = True
+            self.intervals += 1
+
         self.person_time += delta_time
-        if count == 1:
-            self.one_person_time += delta_time
-        elif count == 2:
-            self.two_person_time += delta_time
+        if count in self.persons_times:
+            self.persons_times[count] += delta_time
         else:
-            self.more_person_time += delta_time
+            self.persons_times[count] = delta_time
 
     def get_time_info(self, total_time: int) -> Dict[str, str]:
+        persons_avg = sum(persons * (self.persons_times[persons] / self.person_time) for persons in self.persons_times)
         return {
-            'person_time':
-                (str(timedelta(seconds=int(self.person_time)))),
-            'person_time_percent':
-                (str(f'{self.person_time / total_time * 100: .1f}')),
-            'num_of_intervals':
-                (str(timedelta(seconds=int(self.one_person_time)))),
-            'avg_of_intervals':
-                (str(timedelta(seconds=int(self.two_person_time)))),
-            'persons_avg':
-                (str(timedelta(seconds=int(self.more_person_time))))
+            'person_time': str(timedelta(seconds=int(self.person_time))),
+            'person_time_percent': f'{self.person_time / total_time * 100: .1f}',
+            'num_of_intervals': str(self.intervals),
+            'avg_of_intervals': str(timedelta(seconds=int(0 if self.intervals == 0 else
+                                                          self.person_time / self.intervals))),
+            'persons_avg': f'{persons_avg: .1f}'
         }
