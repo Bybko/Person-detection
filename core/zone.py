@@ -36,11 +36,17 @@ class Zone(Box):
         else:
             self.more_person_time += delta_time
 
-    def get_time_info(self, total_time: int) -> Dict[str, Tuple[str, str]]:
+    def get_time_info(self, total_time: int) -> Dict[str, str]:
         return {
             'person_time':
-                (str(timedelta(seconds=int(self.person_time))), f'{self.person_time / total_time * 100: .1f}'),
-            'one_person_time':
+                (str(timedelta(seconds=int(self.person_time)))),
+            'person_time_percen':
+                (str(f'{self.person_time / total_time * 100: .1f}')),
+            '':
+
+
+
+
                 (str(timedelta(seconds=int(self.one_person_time))), f'{self.one_person_time / total_time * 100: .1f}'),
             'two_person_time':
                 (str(timedelta(seconds=int(self.two_person_time))), f'{self.two_person_time / total_time * 100: .1f}'),

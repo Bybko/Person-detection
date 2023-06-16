@@ -50,13 +50,12 @@ class Camera(metaclass=SingletonMeta):
 
     def get_info(self) -> str:
         info = f'camera: 1\t time:{str(datetime.timedelta(seconds=int(self._total_time)))}\n'
-        info += f'{"id": ^15}|{"time with person": ^20}|{"one person": ^20}|{"two person": ^20}|{"more person": ^20}\n'
+        info += f'{"zone namer": ^15}|{"occupation time": ^20}|{"intervals num & avg": ^20}|{"persons avg": ^20}\n'
         for zone in self._zones:
             zone_time = zone.get_time_info(self._total_time)
-            info += f'{zone.name: ^15}|{zone_time["person_time"][0]:>9} {zone_time["person_time"][1]:>8}% |'\
-                    f'{zone_time["one_person_time"][0]:>9} {zone_time["one_person_time"][1]:>8}% |'\
-                    f'{zone_time["two_person_time"][0]:>9} {zone_time["two_person_time"][1]:>8}% |'\
-                    f'{zone_time["more_person_time"][0]:>9} {zone_time["more_person_time"][1]:>8}%\n'
+            info += f'{zone.name: ^15}|{zone_time["person_time"]:>9} {zone_time["person_time_percent"]:>8}% |'\
+                    f'{zone_time["num_of_intervals"]:>9} {zone_time["avg_of_intervals"]:>9}% |'\
+                    f'{zone_time["persons_avg"]:>9}%\n'
         return info
 
     def show_frame(self, frame: Any) -> None:
