@@ -8,7 +8,7 @@ class DesktopApplication(BaseApplication):
         super().__init__()
         self._model = Model('mask_rcnn_coco.h5', person=True)
         # TODO: change camera with camera list
-        self._camera = Camera(self._model)
+        self._camera = Camera('1', self._model)
         self.__app = PersonDetectionApp(self._camera)
 
     def _prepare(self) -> None:

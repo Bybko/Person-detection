@@ -8,7 +8,7 @@ MDScreen:
         MDBoxLayout:
             size_hint_x: 0.3
 
-            Label:
+            MDLabel:
                 text: 'Cameras'
 
         MDBoxLayout:
@@ -21,9 +21,42 @@ MDScreen:
 
                 KivyCamera:
                     size_hint_y: 1
+                    size_hint_x: 1
 
             MDBoxLayout:
+                orientation: 'vertical'
                 size_hint_y: 0.3
 
-                Label:
-                    text: 'Metrics'
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 0.15
+
+                    MDLabel:
+                        id: camera_name
+                        text: 'Camera: '
+
+                    MDLabel:
+                        id: total_time
+                        text: 'Total time: '
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: 0.85
+
+                    MDGridLayout:
+                        cols: 4
+                        rows: 1
+
+                        MDLabel:
+                            text: 'Zone name'
+                        MDLabel:
+                            text: 'Occupation time'
+                        MDLabel:
+                            text: 'Intervals num & avg'
+                        MDLabel:
+                            text: 'Persons avg'
+
+                    MDScrollView:
+                        MDGridLayout:
+                            id: metrics
+                            cols: 6

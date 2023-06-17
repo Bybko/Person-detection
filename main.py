@@ -1,4 +1,4 @@
-from application import DesktopApplication
+from application.desktop import DesktopApplication
 
 
 def main():

@@ -1,5 +1,5 @@
 from cv2 import VideoCapture, imshow, destroyAllWindows
-from typing import Any
+from typing import Any, Dict
 import time
 import datetime
 
@@ -10,7 +10,8 @@ from .zone import Zone
 
 
 class Camera(metaclass=SingletonMeta):
-    def __init__(self, model: Model) -> None:
+    def __init__(self, name: str, model: Model) -> None:
+        self.name = name
         self._model = model
         self._camera = VideoCapture(0)
         self._total_time = 0
@@ -48,15 +49,12 @@ class Camera(metaclass=SingletonMeta):
         self._prev_frame_time = time.time()
         return frame
 
-    def get_info(self) -> str:
-        info = f'camera: 1\t time:{str(datetime.timedelta(seconds=int(self._total_time)))}\n'
-        info += f'{"zone name":^15}|{"occupation time":^20}|{"intervals num & avg":^20}|{"persons avg":^11}\n'
-        for zone in self._zones:
-            zone_time = zone.get_time_info(self._total_time)
-            info += f'{zone.name:^15}|{zone_time["person_time"]:>9} {zone_time["person_time_percent"]:>8}% |'\
-                    f'{zone_time["num_of_intervals"]:>5} {zone_time["avg_of_intervals"]:>13} |'\
-                    f'{zone_time["persons_avg"]:^11}\n'
-        return info
+    def get_info(self) -> Dict[str, Any]:
+        return {
+            'name': self.name,
+            'total_time': str(datetime.timedelta(seconds=int(self._total_time))),
+            'zones': {zone.name: zone.get_time_info(self._total_time) for zone in self._zones}
+        }
 
     def show_frame(self, frame: Any) -> None:
         imshow('Video', frame)
