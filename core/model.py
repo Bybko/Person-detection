@@ -1,13 +1,31 @@
 from pixellib.instance import instance_segmentation
 from typing import Dict, Any, Union, Tuple, List
 from numpy import ndarray
+from abc import ABC, abstractmethod
 
 from singleton import SingletonMeta
 from .zone import Zone, Box
 
 
-class Model(metaclass=SingletonMeta):
+class BaseModel(metaclass=SingletonMeta):
+    @abstractmethod
+    def proceed_frame(self, frame: Any) -> None: ...
+
+    @abstractmethod
+    def check_persons_in_zone(self, zone: Zone) -> int: ...
+
+
+class NoneModel(BaseModel, metaclass=SingletonMeta):
+    def proceed_frame(self, frame: Any) -> None:
+        pass
+
+    def check_persons_in_zone(self, zone: Zone) -> int:
+        return 0
+
+
+class Model(BaseModel, metaclass=SingletonMeta):
     def __init__(self, model_path: str, infer_speed: str = 'rapid', **target_classes: bool) -> None:
+        super().__init__()
         self._model_path = model_path
         self._segment_camera = instance_segmentation(infer_speed)
         self._segment_camera.load_model(self._model_path)

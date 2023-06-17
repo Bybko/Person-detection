@@ -6,7 +6,7 @@ from kivy.graphics.texture import Texture
 
 from cv2 import flip
 
-from core import Camera
+from core import BaseCamera
 
 
 class KivyCamera(Image):
@@ -31,7 +31,7 @@ class KivyCamera(Image):
 class PersonDetectionApp(MDApp):
     kv_directory = './application/desktop/kivy_application/kv'
 
-    def __init__(self, camera: Camera, **kwargs) -> None:
+    def __init__(self, camera: BaseCamera, **kwargs) -> None:
         super(PersonDetectionApp, self).__init__(**kwargs)
 
         self.camera = camera

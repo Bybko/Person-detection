@@ -2,15 +2,19 @@ from cv2 import waitKey
 from typing import Dict, Any
 
 from application.base import BaseApplication
-from core import Model, Camera
+from core import NoneModel, Model, NoneCamera, Camera
 
 
 class TerminalApplication(BaseApplication):
-    def __init__(self) -> None:
-        super().__init__()
-        self._model = Model('mask_rcnn_coco.h5', person=True)
-        # TODO: change camera with camera list
-        self._camera = Camera('1', self._model)
+    def __init__(self, debug: bool = False) -> None:
+        super().__init__(debug)
+        if self._debug:
+            self._model = NoneModel()
+            self._camera = NoneCamera(self._model)
+        else:
+            self._model = Model('mask_rcnn_coco.h5', person=True)
+            # TODO: change camera with camera list
+            self._camera = Camera('1', self._model)
 
     def _prepare(self) -> None:
         self._camera.start()

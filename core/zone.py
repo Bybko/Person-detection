@@ -44,7 +44,7 @@ class Zone(Box):
         persons_avg = sum(persons * (self.persons_times[persons] / self.person_time) for persons in self.persons_times)
         return {
             'person_time': str(timedelta(seconds=int(self.person_time))),
-            'person_time_percent': f'{self.person_time / total_time * 100: .1f}',
+            'person_time_percent': f'{0 if total_time == 0 else self.person_time / total_time * 100: .1f}',
             'num_of_intervals': str(self.intervals),
             'avg_of_intervals': str(timedelta(seconds=int(0 if self.intervals == 0 else
                                                           self.person_time / self.intervals))),
