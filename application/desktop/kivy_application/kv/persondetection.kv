@@ -1,0 +1,29 @@
+MDScreen:
+    padding: 20
+
+    MDBoxLayout:
+        orientation: 'horizontal'
+        spacing: 10
+
+        MDBoxLayout:
+            size_hint_x: 0.3
+
+            Label:
+                text: 'Cameras'
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 0.7
+
+            MDBoxLayout:
+                size_hint_y: 0.7
+                padding: 10
+
+                KivyCamera:
+                    size_hint_y: 1
+
+            MDBoxLayout:
+                size_hint_y: 0.3
+
+                Label:
+                    text: 'Metrics'
