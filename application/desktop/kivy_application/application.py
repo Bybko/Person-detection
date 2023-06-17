@@ -50,7 +50,7 @@ class PersonDetectionApp(MDApp):
         for name, zone in info['zones'].items():
             self.root.ids.metrics.add_widget(MDLabel(text=f'{name}'))
             self.root.ids.metrics.add_widget(MDLabel(text=f'{zone["person_time"]}'))
-            self.root.ids.metrics.add_widget(MDLabel(text=f'{zone["person_time_percent"]}'))
+            self.root.ids.metrics.add_widget(MDLabel(text=f'{zone["person_time_percent"]}%'))
             self.root.ids.metrics.add_widget(MDLabel(text=f'{zone["num_of_intervals"]}'))
             self.root.ids.metrics.add_widget(MDLabel(text=f'{zone["avg_of_intervals"]}'))
             self.root.ids.metrics.add_widget(MDLabel(text=f'{zone["persons_avg"]}'))
