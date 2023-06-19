@@ -13,6 +13,8 @@ class KivyCamera(Image):
     def __init__(self, **kwargs) -> None:
         super(KivyCamera, self).__init__(**kwargs)
         self.camera = MDApp.get_running_app().camera
+        self.size_hint = (1, 1)
+        self.fit_mode = 'contain'
         Clock.schedule_interval(self.update, 1.0 / 20)
 
     def update(self, dt) -> None:
