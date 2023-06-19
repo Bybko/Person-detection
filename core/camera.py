@@ -1,5 +1,5 @@
 from cv2 import VideoCapture, imshow, destroyAllWindows
-from typing import Any, Dict
+from typing import Any, Dict, List
 import time
 import datetime
 from abc import abstractmethod, ABC
@@ -53,9 +53,9 @@ class NoneCamera(BaseCamera):
 
 
 class Camera(BaseCamera):
-    def __init__(self, name: str, model: BaseModel) -> None:
+    def __init__(self, port: int, name: str, model: BaseModel) -> None:
         super().__init__(name, model)
-        self._camera = VideoCapture(0)
+        self._camera = VideoCapture(port)
         self._total_time = 0
         self._prev_frame_time = 0
         self._current_frame_time = 0
@@ -100,3 +100,23 @@ class Camera(BaseCamera):
 
     def show_frame(self, frame: Any) -> None:
         imshow('Video', frame)
+
+
+def get_cameras_list(max_non_working_ports: int = 6) -> List[int]:
+    non_working_ports = []
+    dev_port = 0
+    working_ports = []
+
+    while len(non_working_ports) < max_non_working_ports:
+        camera = VideoCapture(dev_port)
+        if not camera.isOpened():
+            non_working_ports.append(dev_port)
+        else:
+            is_reading, _ = camera.read()
+            if is_reading:
+                working_ports.append(dev_port)
+            else:
+                non_working_ports.append(dev_port)
+        dev_port += 1
+
+    return working_ports

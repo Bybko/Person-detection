@@ -1,8 +1,8 @@
-from application.desktop import DesktopApplication
+from application.terminal import TerminalApplication
 
 
 def main():
-    application = DesktopApplication(True)
+    application = TerminalApplication()
     application.start()
     application.stop()
 
