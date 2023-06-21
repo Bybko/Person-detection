@@ -15,68 +15,6 @@ MDScreen:
                         size_hint_y: None
                         spacing: 20
 
-                        MDCard:
-                            size_hint_x: 1
-                            size_hint_y: None
-                            height: 200
-
-                            MDBoxLayout:
-                                orientation: 'vertical'
-
-                                AsyncImage:
-                                    size_hint_y: 1
-                                    size_hint_x: 1
-                                    source: 'application/desktop/images/1.png'
-
-                                Label:
-                                    size_hint_y: 0.1
-                                    text: 'Camera 1'
-                        MDCard:
-                            size_hint_x: 1
-                            size_hint_y: None
-                            height: 200
-
-                            MDBoxLayout:
-                                orientation: 'vertical'
-
-                                AsyncImage:
-                                    size_hint_y: 1
-                                    size_hint_x: 1
-                                    source: 'application/desktop/images/1.png'
-
-                                Label:
-                                    size_hint_y: 0.1
-                                    text: 'Camera 1'
-                        MDCard:
-                            size_hint_x: 1
-                            size_hint_y: None
-                            height: 200
-
-                            MDBoxLayout:
-                                orientation: 'vertical'
-
-                                KivyCamera:
-
-                                Label:
-                                    size_hint_y: 0.1
-                                    text: 'Camera 1'
-                        MDCard:
-                            size_hint_x: 1
-                            size_hint_y: None
-                            height: 200
-
-                            MDBoxLayout:
-                                orientation: 'vertical'
-
-                                AsyncImage:
-                                    size_hint_y: 1
-                                    size_hint_x: 1
-                                    source: 'application/desktop/images/1.png'
-
-                                Label:
-                                    size_hint_y: 0.1
-                                    text: 'Camera 1'
-
             MDBoxLayout:
                 orientation: 'vertical'
                 size_hint_x: 0.7
@@ -85,7 +23,8 @@ MDScreen:
                     size_hint_y: 0.7
                     padding: 10
 
-                    KivyCamera:
+                    MainCamera:
+                        id: main_camera
 
                 MDBoxLayout:
                     orientation: 'vertical'

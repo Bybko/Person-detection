@@ -5,7 +5,7 @@ import datetime
 from abc import abstractmethod, ABC
 import numpy as np
 
-from .model import BaseModel
+from .model import BaseModel, NoneModel
 from .zone import Zone
 
 
@@ -31,7 +31,7 @@ class BaseCamera(ABC):
 
 
 class NoneCamera(BaseCamera):
-    def __init__(self, model: BaseModel) -> None:
+    def __init__(self, model: BaseModel = NoneModel()) -> None:
         super().__init__('None', model)
         self._zones = [Zone("None", 0, 0, 0, 0)]
 
