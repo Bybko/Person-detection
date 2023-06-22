@@ -8,7 +8,7 @@ class DesktopApplication(BaseApplication):
         super().__init__(debug)
         if self._debug:
             self._model = NoneModel()
-            self._cameras = [NoneCamera(self._model)]
+            self._cameras = [NoneCamera(self._model), NoneCamera(self._model), NoneCamera(self._model)]
         else:
             self._model = Model('mask_rcnn_coco.h5', person=True)
             self._cameras = [Camera(camera_port, str(i), self._model)

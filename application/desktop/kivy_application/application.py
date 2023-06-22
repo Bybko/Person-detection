@@ -37,7 +37,8 @@ class MainCamera(Image):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.camera: KivyCamera = KivyCamera(NoneCamera())
-        Clock.schedule_interval(self.update, 1.0 / 30)
+        Clock.schedule_interval(self.update_camera, 1.0 / 60)
+        Clock.schedule_interval(self.update_metrics, 1.0)
 
     def set_camera(self, camera: KivyCamera) -> None:
         if self.camera.parent is not None:
@@ -45,8 +46,10 @@ class MainCamera(Image):
         self.camera = camera
         self.camera.parent.parent.parent.line_color = MDApp.get_running_app().theme_cls.primary_color
 
-    def update(self, dt) -> None:
+    def update_camera(self, dt) -> None:
         self.texture = self.camera.texture
+
+    def update_metrics(self, dt) -> None:
         MDApp.get_running_app().update_metrics(self.camera.camera)
 
 
@@ -83,7 +86,7 @@ class PersonDetectionApp(MDApp):
                             orientation='vertical'
                         ),
                         size_hint=(1, 1),
-                        on_press=lambda callback: self.set_main_camera(kivy_camera)
+                        on_press=self.set_main_camera
                     ),
                     line_color=self.theme_cls.text_color,
                     line_width=2,
@@ -92,8 +95,8 @@ class PersonDetectionApp(MDApp):
                 )
             )
 
-    def set_main_camera(self, camera: KivyCamera) -> None:
-        self.root.ids.main_camera.set_camera(camera)
+    def set_main_camera(self, instance) -> None:
+        self.root.ids.main_camera.set_camera(instance.children[0].children[-1])
 
     def update_metrics(self, camera: BaseCamera) -> None:
         info = camera.get_info()
