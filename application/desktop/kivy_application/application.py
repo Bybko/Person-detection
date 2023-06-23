@@ -81,13 +81,14 @@ class PersonDetectionApp(MDApp):
                             MDLabel(
                                 size_hint_y=0.1,
                                 text=camera.name,
-                                halign='center'
+                                halign='center',
                             ),
-                            orientation='vertical'
+                            orientation='vertical',
                         ),
                         size_hint=(1, 1),
-                        on_press=self.set_main_camera
+                        on_press=self.set_main_camera,
                     ),
+                    radius=[0, 0, 0, 0],
                     line_color=self.theme_cls.text_color,
                     line_width=2,
                     size_hint=(1, None),
