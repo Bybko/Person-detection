@@ -2,7 +2,7 @@ from application.desktop import DesktopApplication
 
 
 def main():
-    application = DesktopApplication()
+    application = DesktopApplication(debug=True)
     application.start()
     application.stop()
 

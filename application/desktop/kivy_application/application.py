@@ -59,6 +59,10 @@ class MainCamera(Image):
 
 
 class KivyZone(ResizableBehavior, Button):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.size = abs(100 - 500), abs(100 - 500)
+        self.size_hint = (None, None)
     resizable_up = True
     resizable_down = True
     resizable_left = True

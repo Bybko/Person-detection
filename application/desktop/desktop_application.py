@@ -4,7 +4,7 @@ from .kivy_application import PersonDetectionApp
 
 
 class DesktopApplication(BaseApplication):
-    def __init__(self, debug: bool = True) -> None:
+    def __init__(self, debug: bool = False) -> None:
         super().__init__(debug)
         if self._debug:
             self._model = NoneModel()
