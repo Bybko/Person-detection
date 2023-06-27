@@ -1,7 +1,8 @@
-from pixellib.instance import instance_segmentation
-from typing import Dict, Any, Union, Tuple, List
-from numpy import ndarray
 from abc import ABC, abstractmethod
+from typing import Dict, Any, Union, Tuple, List
+
+from numpy import ndarray
+from pixellib.instance import instance_segmentation
 
 from singleton import SingletonMeta
 from .zone import Zone, Box

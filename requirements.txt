@@ -3,4 +3,4 @@ tensorflow==2.4.1
 opencv-python==4.7.0.72
 numpy~=1.19.5
 kivymd~=1.1.1
-Kivy~=2.2.0
+Kivy==2.2.1
