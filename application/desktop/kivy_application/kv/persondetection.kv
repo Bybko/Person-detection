@@ -20,16 +20,13 @@ MDScreen:
                 size_hint_x: 0.7
 
                 MDFloatLayout:
+                    id: main_camera_and_zones
                     size_hint_y: 0.7
                     padding: 10
 
                     MainCamera:
                         id: main_camera
                         pos_hint: { "center_x": 0.5, "center_y": 0.5 }
-
-                    KivyZone:
-                        pos_hint: { "center_x": 0.5, "center_y": 0.5 }
-                        opacity: 0.2
 
                 MDBoxLayout:
                     orientation: 'vertical'

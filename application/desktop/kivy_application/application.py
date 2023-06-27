@@ -1,7 +1,6 @@
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
 from kivy.uix.image import Image
-from kivy.uix.button import Button
 from kivymd.uix.card import MDCard
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton
@@ -58,11 +57,13 @@ class MainCamera(Image):
         MDApp.get_running_app().update_metrics(self.camera.camera)
 
 
-class KivyZone(ResizableBehavior, Button):
-    def __init__(self, **kwargs):
+class KivyZone(ResizableBehavior, Image):
+    def __init__(self, parent_widget, **kwargs):
         super().__init__(**kwargs)
-        self.size = abs(100 - 500), abs(100 - 500)
+        self.size = (abs(100 - 300), abs(100 - 300))
         self.size_hint = (None, None)
+        self.opacity = 0.2
+        self.pos = (parent_widget.pos[0] + 100, parent_widget.pos[1] + 100)
     resizable_up = True
     resizable_down = True
     resizable_left = True
@@ -113,7 +114,16 @@ class PersonDetectionApp(MDApp):
             )
 
     def set_main_camera(self, instance) -> None:
+        camera_layout = self.root.ids.main_camera_and_zones
+
+        for child in camera_layout.children[:]:
+            if isinstance(child, KivyZone):
+                camera_layout.remove_widget(child)
+
         self.root.ids.main_camera.set_camera(instance.children[0].children[-1])
+
+        new_widget = KivyZone(parent_widget=self.root.ids.main_camera)
+        camera_layout.add_widget(new_widget)
 
     def create_zone(self) -> None:
         self.root.ids.main_camera.create_new_zone()
