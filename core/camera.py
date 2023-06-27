@@ -24,6 +24,9 @@ class BaseCamera(ABC):
     def stop(self) -> None: ...
 
     @abstractmethod
+    def create_zone(self, zone: Zone) -> None: ...
+
+    @abstractmethod
     def proceed_frame(self) -> Any: ...
 
     @abstractmethod
@@ -39,6 +42,9 @@ class NoneCamera(BaseCamera):
         pass
 
     def stop(self) -> None:
+        pass
+
+    def create_zone(self, zone: Zone) -> None:
         pass
 
     def proceed_frame(self) -> Any:
@@ -70,6 +76,9 @@ class Camera(BaseCamera):
     def stop(self) -> None:
         self._camera.release()
         destroyAllWindows()
+
+    def create_zone(self, zone: Zone) -> None:
+        self._zones.append(zone)
 
     def proceed_frame(self) -> Any:
         success, frame = self._camera.read()
