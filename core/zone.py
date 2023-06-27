@@ -1,7 +1,8 @@
-from cv2 import rectangle
-from typing import Any
 from datetime import timedelta
+from typing import Any
 from typing import Dict
+
+from cv2 import rectangle
 
 
 class Box:

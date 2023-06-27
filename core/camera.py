@@ -1,9 +1,10 @@
-from cv2 import VideoCapture, imshow, destroyAllWindows
-from typing import Any, Dict, List
-import time
 import datetime
+import time
 from abc import abstractmethod, ABC
+from typing import Any, Dict, List
+
 import numpy as np
+from cv2 import VideoCapture, imshow, destroyAllWindows
 
 from .model import BaseModel, NoneModel
 from .zone import Zone
@@ -118,5 +119,7 @@ def get_cameras_list(max_non_working_ports: int = 6) -> List[int]:
             else:
                 non_working_ports.append(dev_port)
         dev_port += 1
+        camera.release()
+        destroyAllWindows()
 
     return working_ports

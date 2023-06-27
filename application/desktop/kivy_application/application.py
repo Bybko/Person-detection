@@ -1,14 +1,14 @@
-from kivymd.app import MDApp
-from kivymd.uix.label import MDLabel
-from kivy.uix.image import Image
-from kivymd.uix.card import MDCard
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFlatButton
-from kivy.clock import Clock
-from kivy.graphics.texture import Texture
+from typing import List
 
 from cv2 import flip
-from typing import List
+from kivy.clock import Clock
+from kivy.graphics.texture import Texture
+from kivy.uix.image import Image
+from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDLabel
 
 from core import BaseCamera, NoneCamera
 

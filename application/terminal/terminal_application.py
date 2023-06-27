@@ -1,5 +1,6 @@
-from cv2 import waitKey
 from typing import Dict, Any
+
+from cv2 import waitKey
 
 from application.base import BaseApplication
 from core import NoneModel, Model, NoneCamera, Camera, get_cameras_list

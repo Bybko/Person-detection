@@ -1,6 +1,6 @@
 from application.base import BaseApplication
-from .kivy_application import PersonDetectionApp
 from core import NoneCamera, Camera, get_cameras_list, NoneModel, Model
+from .kivy_application import PersonDetectionApp
 
 
 class DesktopApplication(BaseApplication):
