@@ -1,14 +1,16 @@
-from typing import List
-
-from cv2 import flip
-from kivy.clock import Clock
-from kivy.graphics.texture import Texture
-from kivy.uix.image import Image
 from kivymd.app import MDApp
+from kivymd.uix.label import MDLabel
+from kivy.uix.image import Image
+from kivy.uix.button import Button
+from kivymd.uix.card import MDCard
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton
-from kivymd.uix.card import MDCard
-from kivymd.uix.label import MDLabel
+from kivy.clock import Clock
+from kivy.graphics.texture import Texture
+from .behaviors.resize import ResizableBehavior
+
+from cv2 import flip
+from typing import List
 
 from core import BaseCamera, NoneCamera
 
@@ -46,11 +48,21 @@ class MainCamera(Image):
         self.camera = camera
         self.camera.parent.parent.parent.line_color = MDApp.get_running_app().theme_cls.primary_color
 
+    def create_new_zone(self) -> None:
+        self.camera.camera.create_zone(zone)
+
     def update_camera(self, dt) -> None:
         self.texture = self.camera.texture
 
     def update_metrics(self, dt) -> None:
         MDApp.get_running_app().update_metrics(self.camera.camera)
+
+
+class KivyZone(ResizableBehavior, Button):
+    resizable_up = True
+    resizable_down = True
+    resizable_left = True
+    resizable_right = True
 
 
 class PersonDetectionApp(MDApp):
@@ -98,6 +110,9 @@ class PersonDetectionApp(MDApp):
 
     def set_main_camera(self, instance) -> None:
         self.root.ids.main_camera.set_camera(instance.children[0].children[-1])
+
+    def create_zone(self) -> None:
+        self.root.ids.main_camera.create_new_zone()
 
     def update_metrics(self, camera: BaseCamera) -> None:
         info = camera.get_info()
