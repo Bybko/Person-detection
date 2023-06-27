@@ -4,7 +4,7 @@ from core import NoneCamera, Camera, get_cameras_list, NoneModel, Model
 
 
 class DesktopApplication(BaseApplication):
-    def __init__(self, debug: bool = False) -> None:
+    def __init__(self, debug: bool = True) -> None:
         super().__init__(debug)
         if self._debug:
             self._model = NoneModel()

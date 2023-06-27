@@ -83,7 +83,7 @@ class PersonDetectionApp(MDApp):
         for camera in self.cameras:
             kivy_camera = KivyCamera(
                 camera=camera,
-                size_hint=(1, 0.9)
+                size_hint=(0.5, 0.9)
             )
             self.root.ids.cameras_list.add_widget(
                 MDCard(
