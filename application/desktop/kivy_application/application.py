@@ -1,17 +1,17 @@
-from kivymd.app import MDApp
-from kivymd.uix.label import MDLabel
-from kivy.uix.image import Image
-from kivymd.uix.card import MDCard
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFlatButton
-from kivy.clock import Clock
-from kivy.graphics.texture import Texture
-from .behaviors.resize import ResizableBehavior
-
-from cv2 import flip
 from typing import List
 
+from cv2 import flip
+from kivy.clock import Clock
+from kivy.graphics.texture import Texture
+from kivy.uix.image import Image
+from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDLabel
+
 from core import BaseCamera, NoneCamera
+from .behaviors.resize import ResizableBehavior  # TODO: correctly install this library
 
 
 class KivyCamera(Image):
@@ -58,16 +58,17 @@ class MainCamera(Image):
 
 
 class KivyZone(ResizableBehavior, Image):
+    resizable_up = True
+    resizable_down = True
+    resizable_left = True
+    resizable_right = True
+
     def __init__(self, parent_widget, **kwargs):
         super().__init__(**kwargs)
         self.size = (abs(100 - 300), abs(100 - 300))
         self.size_hint = (None, None)
         self.opacity = 0.2
         self.pos = (parent_widget.pos[0] + 100, parent_widget.pos[1] + 100)
-    resizable_up = True
-    resizable_down = True
-    resizable_left = True
-    resizable_right = True
 
 
 class PersonDetectionApp(MDApp):
