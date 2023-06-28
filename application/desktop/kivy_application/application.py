@@ -56,6 +56,11 @@ class MainCamera(Image):
     def update_metrics(self, dt) -> None:
         MDApp.get_running_app().update_metrics(self.camera.camera)
 
+    def reposition_children(self) -> None:
+        for child in self.children[:]:
+            if isinstance(child, KivyZone):
+                child.reposition()
+
 
 class KivyZone(ResizableBehavior, Image):
     resizable_up = True
@@ -63,12 +68,16 @@ class KivyZone(ResizableBehavior, Image):
     resizable_left = True
     resizable_right = True
 
-    def __init__(self, parent_widget, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size = (abs(100 - 300), abs(100 - 300))
         self.size_hint = (None, None)
         self.opacity = 0.2
-        self.pos = (parent_widget.pos[0] + 100, parent_widget.pos[1] + 100)
+
+    def reposition(self):
+        offset = ((self.parent.size[0] - self.parent.texture_size[0]) // 2,
+                  (self.parent.size[1] - self.parent.texture_size[1]) // 2)
+        self.pos = (self.parent.pos[0] + offset[0] + 100, self.parent.pos[1] + offset[1] + 100)
 
 
 class PersonDetectionApp(MDApp):
@@ -115,7 +124,7 @@ class PersonDetectionApp(MDApp):
             )
 
     def set_main_camera(self, instance) -> None:
-        camera_layout = self.root.ids.main_camera_and_zones
+        camera_layout = self.root.ids.main_camera
 
         for child in camera_layout.children[:]:
             if isinstance(child, KivyZone):
@@ -123,8 +132,7 @@ class PersonDetectionApp(MDApp):
 
         self.root.ids.main_camera.set_camera(instance.children[0].children[-1])
 
-        new_widget = KivyZone(parent_widget=self.root.ids.main_camera)
-        camera_layout.add_widget(new_widget)
+        camera_layout.add_widget(KivyZone())
 
     def create_zone(self) -> None:
         self.root.ids.main_camera.create_new_zone()

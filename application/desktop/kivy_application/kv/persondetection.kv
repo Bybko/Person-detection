@@ -67,3 +67,12 @@ MDScreen:
                                 size_hint_y: None
                                 id: metrics
                                 cols: 6
+
+
+<MainCamera>:
+    on_children:
+        root.reposition_children()
+    on_size:
+        root.reposition_children()
+    on_pos:
+        root.reposition_children()
