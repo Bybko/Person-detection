@@ -47,9 +47,6 @@ class MainCamera(Image):
         self.camera = camera
         self.camera.parent.parent.parent.line_color = MDApp.get_running_app().theme_cls.primary_color
 
-    def create_new_zone(self) -> None:
-        self.camera.camera.create_zone(zone)
-
     def update_camera(self, dt) -> None:
         self.texture = self.camera.texture
 
@@ -130,7 +127,7 @@ class PersonDetectionApp(MDApp):
             if isinstance(child, KivyZone):
                 camera_layout.remove_widget(child)
 
-        self.root.ids.main_camera.set_camera(instance.children[0].children[-1])
+        camera_layout.set_camera(instance.children[0].children[-1])
 
         camera_layout.add_widget(KivyZone())
 
