@@ -28,6 +28,9 @@ class BaseCamera(ABC):
     def create_zone(self, zone: Zone) -> None: ...
 
     @abstractmethod
+    def get_zones(self) -> List[Zone]: ...
+
+    @abstractmethod
     def proceed_frame(self) -> Any: ...
 
     @abstractmethod
@@ -37,7 +40,7 @@ class BaseCamera(ABC):
 class NoneCamera(BaseCamera):
     def __init__(self, model: BaseModel = NoneModel()) -> None:
         super().__init__('None', model)
-        self._zones = [Zone("None", 0, 0, 0, 0)]
+        self._zones = [Zone("None", 100, 100, 300, 300)]
 
     def start(self) -> None:
         pass
@@ -47,6 +50,9 @@ class NoneCamera(BaseCamera):
 
     def create_zone(self, zone: Zone) -> None:
         pass
+
+    def get_zones(self) -> List[Zone]:
+        return self._zones
 
     def proceed_frame(self) -> Any:
         return np.zeros((480, 640, 3), dtype=np.uint8)
@@ -80,6 +86,9 @@ class Camera(BaseCamera):
 
     def create_zone(self, zone: Zone) -> None:
         self._zones.append(zone)
+
+    def get_zones(self) -> List[Zone]:
+        return self._zones
 
     def proceed_frame(self) -> Any:
         success, frame = self._camera.read()

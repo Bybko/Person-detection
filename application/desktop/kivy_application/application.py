@@ -10,8 +10,8 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 
-from core import BaseCamera, NoneCamera
-from .behaviors.resize import ResizableBehavior  # TODO: correctly install this library
+from core import BaseCamera, NoneCamera, Zone
+from .behaviors.resize import ResizableBehavior
 
 
 class KivyCamera(Image):
@@ -46,6 +46,11 @@ class MainCamera(Image):
             self.camera.parent.parent.parent.line_color = MDApp.get_running_app().theme_cls.text_color
         self.camera = camera
         self.camera.parent.parent.parent.line_color = MDApp.get_running_app().theme_cls.primary_color
+        self.add_zones()
+
+    def add_zones(self):
+        for zone in self.camera.camera.get_zones():
+            self.add_widget(KivyZone(zone))
 
     def update_camera(self, dt) -> None:
         self.texture = self.camera.texture
@@ -65,16 +70,19 @@ class KivyZone(ResizableBehavior, Image):
     resizable_left = True
     resizable_right = True
 
-    def __init__(self, **kwargs):
+    def __init__(self, zone: Zone, **kwargs):
         super().__init__(**kwargs)
-        self.size = (abs(100 - 300), abs(100 - 300))
+        self._zone = zone
+        self.size = (abs(self._zone.startX - self._zone.endX),
+                     abs(self._zone.startY - self._zone.endY))
         self.size_hint = (None, None)
         self.opacity = 0.2
 
     def reposition(self):
         offset = ((self.parent.size[0] - self.parent.texture_size[0]) // 2,
                   (self.parent.size[1] - self.parent.texture_size[1]) // 2)
-        self.pos = (self.parent.pos[0] + offset[0] + 100, self.parent.pos[1] + offset[1] + 100)
+        self.pos = (self.parent.pos[0] + offset[0] + self._zone.startX,
+                    self.parent.pos[1] + offset[1] + (self.parent.texture_size[1] - self._zone.endY))
 
 
 class PersonDetectionApp(MDApp):
@@ -127,9 +135,8 @@ class PersonDetectionApp(MDApp):
             if isinstance(child, KivyZone):
                 camera_layout.remove_widget(child)
 
-        camera_layout.set_camera(instance.children[0].children[-1])
-
-        camera_layout.add_widget(KivyZone())
+        main_camera = instance.children[0].children[-1]
+        camera_layout.set_camera(main_camera)
 
     def create_zone(self) -> None:
         self.root.ids.main_camera.create_new_zone()
