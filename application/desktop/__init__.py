@@ -1,1 +1,0 @@
-from .desktop_application import DesktopApplication
